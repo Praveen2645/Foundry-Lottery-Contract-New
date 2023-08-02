@@ -15,6 +15,11 @@ contract Lottery is VRFConsumerBaseV2 {
     error Lottery__NotEnoughEthSent();
     error Lottery__TransferFailed();
     error Lottery__LotteryNotOpen();
+    error Raffle__UpkeepNotNeeded(
+        uint256 currentBalance, 
+        uint256 numPlayers, 
+        uint256 lotteryState
+        );
 
     /* Type declaration*/
     enum LotteryState {
@@ -75,15 +80,41 @@ function enterLottery() external payable{
    emit EnteredLottery(msg.sender);
 }
 
-function pickWinner() external{
-//check to see if enough time has passed
-if((block.timestamp - s_lastTimeStamp)< i_interval){
-revert();
+/**
+ * @dev This is the function that the Chainlink Keeper nodes call
+     * they look for `upkeepNeeded` to return True.
+     * the following should be true for this to return true:
+     * 1. The time interval has passed between raffle runs.
+     * 2. The lottery is open.
+     * 3. The contract has ETH.
+     * 4. Implicity, your subscription is funded with LINK.
+
+ */
+//function performed when the winner is picked
+function checkUpkeep(bytes memory /*chaeckData*/) public view returns(bool upkeepNeeded, bytes memory /*performData*/){
+bool timeHasPassed = (block.timestamp - s_lastTimeStamp)>= i_interval;
+bool isOpen = LotteryState.OPEN == s_lotteryState;
+bool hasBalance = address(this).balance>0;
+bool hasPlayers = s_players.length > 0;
+upkeepNeeded = (timeHasPassed && isOpen && hasBalance && hasPlayers);
+return (upkeepNeeded,"0x0");
+//if checkUpkeep is true then it will call the upkeep function
 }
+
+function performUpkeep(bytes calldata /* performData*/) external{
+(bool upkeepNeeded, ) = checkUpkeep("");
+if (!upkeepNeeded){
+    revert Raffle__UpkeepNotNeeded(  
+        address(this).balance,
+    s_players.length,
+    uint256(s_lotteryState)
+    );
+}
+// ckeck to see if enough time has passed
 s_lotteryState = LotteryState.CALCULATING;
 
 //requesting the vrf random number 
-  uint256 requestId = i_vrfCoordinator.requestRandomWords(
+   i_vrfCoordinator.requestRandomWords(
             i_gasLane,//gas lane you can mention if you dont want to spent more or keyHash
             i_subscriptionId,//id that you funded the link
             REQUEST_CONFIRMATIONS,// block confirmations for random numbers
@@ -94,7 +125,7 @@ s_lotteryState = LotteryState.CALCULATING;
 
 //this function will return the random number
 function fulfillRandomWords(
-        uint256 requestId,
+        uint256 /*requestId*/,
         uint256[] memory randomWords
     ) internal override {
         //checks
@@ -122,3 +153,6 @@ function getEntranceFee() external view returns(uint256){
 }
 
 }
+//checks- if else, require
+//effect- effects of the contract,push variable declarations...
+//interactions- interaction wtih the other cotracts - to avoid reentrancy attacks
