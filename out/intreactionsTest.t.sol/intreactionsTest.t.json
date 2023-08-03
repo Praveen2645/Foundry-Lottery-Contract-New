@@ -1,0 +1,34 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "test/uint/intreactionsTest.t.sol",
+    "id": 44928,
+    "exportedSymbols": {},
+    "nodeType": "SourceUnit",
+    "src": "33:26:28",
+    "nodes": [
+      {
+        "id": 44927,
+        "nodeType": "PragmaDirective",
+        "src": "33:24:28",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".19"
+        ]
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 28
+}
