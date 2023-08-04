@@ -1025,9 +1025,94 @@
         }
       }
     },
+    "lib/foundry-devops/src/DevOpsTools.sol": {
+      "lastModificationDate": 1691142163260,
+      "contentHash": "435b44573ddd0e1449de231b2567fc34",
+      "sourceName": "lib/foundry-devops/src/DevOpsTools.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "useLiteralContent": false,
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol"
+      ],
+      "versionRequirement": ">=0.8.13, <0.9.0",
+      "artifacts": {
+        "DevOpsTools": {
+          "0.8.19+commit.7dd6d404.Windows.msvc": "DevOpsTools.sol\\DevOpsTools.json"
+        }
+      }
+    },
+    "lib/solmate/src/tokens/ERC20.sol": {
+      "lastModificationDate": 1691129777497,
+      "contentHash": "0214f143584e3f454e7dab570204e785",
+      "sourceName": "lib/solmate/src/tokens/ERC20.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "useLiteralContent": false,
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {}
+        }
+      },
+      "imports": [],
+      "versionRequirement": ">=0.8.0",
+      "artifacts": {
+        "ERC20": {
+          "0.8.19+commit.7dd6d404.Windows.msvc": "ERC20.sol\\ERC20.json"
+        }
+      }
+    },
     "script/DeployLottery.s.sol": {
-      "lastModificationDate": 1691061696717,
-      "contentHash": "97744db8057d88328e02cfee25856f79",
+      "lastModificationDate": 1691147213043,
+      "contentHash": "82bde4cf03d929de08c67b49f2c4d795",
       "sourceName": "script/DeployLottery.s.sol",
       "solcConfig": {
         "settings": {
@@ -1077,9 +1162,12 @@
         "lib/forge-std/src/console2.sol",
         "lib/forge-std/src/interfaces/IMulticall3.sol",
         "lib/forge-std/src/safeconsole.sol",
+        "lib/foundry-devops/src/DevOpsTools.sol",
+        "lib/solmate/src/tokens/ERC20.sol",
         "script\\HelperConfig.s.sol",
         "script\\interactions.s.sol",
-        "src\\lottery.sol"
+        "src\\lottery.sol",
+        "test\\mocks\\LinkToken.sol"
       ],
       "versionRequirement": "^0.8.19",
       "artifacts": {
@@ -1089,8 +1177,8 @@
       }
     },
     "script/HelperConfig.s.sol": {
-      "lastModificationDate": 1691043934294,
-      "contentHash": "158a6c702d7368087ce8f7c477198223",
+      "lastModificationDate": 1691130006103,
+      "contentHash": "a2653287360cb9ac8a248547d9a945eb",
       "sourceName": "script/HelperConfig.s.sol",
       "solcConfig": {
         "settings": {
@@ -1139,7 +1227,9 @@
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol",
         "lib/forge-std/src/interfaces/IMulticall3.sol",
-        "lib/forge-std/src/safeconsole.sol"
+        "lib/forge-std/src/safeconsole.sol",
+        "lib/solmate/src/tokens/ERC20.sol",
+        "test\\mocks\\LinkToken.sol"
       ],
       "versionRequirement": "^0.8.19",
       "artifacts": {
@@ -1149,8 +1239,8 @@
       }
     },
     "script/interactions.s.sol": {
-      "lastModificationDate": 1691061442083,
-      "contentHash": "70a257a19fed3ab0a7338dff8b07f1c0",
+      "lastModificationDate": 1691143425641,
+      "contentHash": "612585b3f632200412cae45c3c0dedde",
       "sourceName": "script/interactions.s.sol",
       "solcConfig": {
         "settings": {
@@ -1200,12 +1290,21 @@
         "lib/forge-std/src/console2.sol",
         "lib/forge-std/src/interfaces/IMulticall3.sol",
         "lib/forge-std/src/safeconsole.sol",
-        "script\\HelperConfig.s.sol"
+        "lib/foundry-devops/src/DevOpsTools.sol",
+        "lib/solmate/src/tokens/ERC20.sol",
+        "script\\HelperConfig.s.sol",
+        "test\\mocks\\LinkToken.sol"
       ],
       "versionRequirement": "^0.8.19",
       "artifacts": {
+        "AddConsumer": {
+          "0.8.19+commit.7dd6d404.Windows.msvc": "interactions.s.sol\\AddConsumer.json"
+        },
         "CreateSubscription": {
           "0.8.19+commit.7dd6d404.Windows.msvc": "interactions.s.sol\\CreateSubscription.json"
+        },
+        "FundSubscription": {
+          "0.8.19+commit.7dd6d404.Windows.msvc": "interactions.s.sol\\FundSubscription.json"
         }
       }
     },
@@ -1253,9 +1352,55 @@
         }
       }
     },
+    "test/mocks/LinkToken.sol": {
+      "lastModificationDate": 1691134717716,
+      "contentHash": "832b8a34e32522e87e4bd1d59637ea0a",
+      "sourceName": "test/mocks/LinkToken.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "useLiteralContent": false,
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/solmate/src/tokens/ERC20.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "ERC677Receiver": {
+          "0.8.19+commit.7dd6d404.Windows.msvc": "LinkToken.sol\\ERC677Receiver.json"
+        },
+        "LinkToken": {
+          "0.8.19+commit.7dd6d404.Windows.msvc": "LinkToken.sol\\LinkToken.json"
+        }
+      }
+    },
     "test/uint/LotteryTest.t.sol": {
-      "lastModificationDate": 1691064326212,
-      "contentHash": "4226a3dbcefafce8529eb3c08f6caa3f",
+      "lastModificationDate": 1691130676601,
+      "contentHash": "d271ede10f8aa8d5efc0be7c23308d64",
       "sourceName": "test/uint/LotteryTest.t.sol",
       "solcConfig": {
         "settings": {
@@ -1310,10 +1455,13 @@
         "lib/forge-std/src/console2.sol",
         "lib/forge-std/src/interfaces/IMulticall3.sol",
         "lib/forge-std/src/safeconsole.sol",
+        "lib/foundry-devops/src/DevOpsTools.sol",
+        "lib/solmate/src/tokens/ERC20.sol",
         "script\\DeployLottery.s.sol",
         "script\\HelperConfig.s.sol",
         "script\\interactions.s.sol",
-        "src\\lottery.sol"
+        "src\\lottery.sol",
+        "test\\mocks\\LinkToken.sol"
       ],
       "versionRequirement": "^0.8.19",
       "artifacts": {
