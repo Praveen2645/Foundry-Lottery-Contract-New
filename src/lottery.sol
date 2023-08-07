@@ -15,7 +15,7 @@ contract Lottery is VRFConsumerBaseV2 {
     error Lottery__NotEnoughEthSent();
     error Lottery__TransferFailed();
     error Lottery__LotteryNotOpen();
-    error Raffle__UpkeepNotNeeded(
+    error Lottery__UpkeepNotNeeded(
         uint256 currentBalance, 
         uint256 numPlayers, 
         uint256 lotteryState
@@ -46,6 +46,7 @@ contract Lottery is VRFConsumerBaseV2 {
     /**Events */
     event EnteredLottery(address indexed player);
     event PickedWinner(address indexed winner);
+    event RequestedLotteryWinner(uint256 indexed requestId);
 
     constructor(
         
@@ -104,7 +105,7 @@ return (upkeepNeeded,"0x0");
 function performUpkeep(bytes calldata /* performData*/) external{
 (bool upkeepNeeded, ) = checkUpkeep("");
 if (!upkeepNeeded){
-    revert Raffle__UpkeepNotNeeded(  
+    revert Lottery__UpkeepNotNeeded(  
         address(this).balance,
     s_players.length,
     uint256(s_lotteryState)
@@ -114,13 +115,14 @@ if (!upkeepNeeded){
 s_lotteryState = LotteryState.CALCULATING;
 
 //requesting the vrf random number 
-   i_vrfCoordinator.requestRandomWords(
+  uint256 requestId= i_vrfCoordinator.requestRandomWords(
             i_gasLane,//gas lane you can mention if you dont want to spent more or keyHash
             i_subscriptionId,//id that you funded the link
             REQUEST_CONFIRMATIONS,// block confirmations for random numbers
             i_callbackGasLimit, //max limit for gas
             NUM_WORDS//number of random nmbers
         );
+        emit RequestedLotteryWinner(requestId);
 }
 
 //this function will return the random number
@@ -161,6 +163,20 @@ function getPlayer(uint256 indexOfPlayer) external view returns(address){
 
     return s_players[indexOfPlayer];
 }
+function getRecentWinner() external view returns(address){
+return s_recentWinner;
+}
+
+function getLengthOfPlayers() external view returns(uint256){
+    return s_players.length;
+}
+
+function getLastTimeStamp() external view returns(uint256){
+    return s_lastTimeStamp;
+}
+
+
+
 }
 //checks- if else, require
 //effect- effects of the contract,push variable declarations...

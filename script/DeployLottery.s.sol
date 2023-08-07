@@ -19,7 +19,8 @@ function run() external returns (Lottery,HelperConfig){
      bytes32 gasLane,
      uint64 subscriptionId,
      uint32 callbackGasLimit,
-     address link
+     address link,
+     uint256 deployerKey
     ) = helperConfig.activeNetworkConfig ();   
 //if we do not have thesubscriptionId 
 //we create it
@@ -29,11 +30,11 @@ function run() external returns (Lottery,HelperConfig){
     if (subscriptionId == 0){
         //creating the subscription id
         CreateSubscription createSubscription = new CreateSubscription();
-        subscriptionId = createSubscription.createSubscription(vrfCoordinator);
+        subscriptionId = createSubscription.createSubscription(vrfCoordinator,deployerKey);
 
     //fund it
     FundSubscription fundSubscription = new FundSubscription();
-    fundSubscription.fundSubscription((vrfCoordinator), subscriptionId, link);
+    fundSubscription.fundSubscription((vrfCoordinator), subscriptionId, link,deployerKey);
     }
 //launch lauttery
     vm.startBroadcast();
@@ -48,7 +49,14 @@ function run() external returns (Lottery,HelperConfig){
     vm.stopBroadcast();
 //add consumer
     AddConsumer addConsumer = new AddConsumer();
-    addConsumer.addConsumer(address(lottery),vrfCoordinator,subscriptionId);
+    addConsumer.addConsumer(
+        address(lottery),
+        vrfCoordinator,
+        subscriptionId,
+        deployerKey
+        );
     return (lottery, helperConfig);
 }
 }
+
+//this is the deploying script basically for "testCantEnterWhenRaffleIsCalculating" running this test  programmatically
